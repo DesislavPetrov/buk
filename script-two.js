@@ -208,23 +208,20 @@ function loadMap(selectedCountry) {
       var isSidebarVisible = true;
       // Add an event listener to the button
       controlButtonTwo.addEventListener("click", () => {
-        
-        if($(document).width() > 838){
-          if(isSidebarVisible){
-            console.log(isSidebarVisible)
+        if ($(document).width() > 838) {
+          if (isSidebarVisible) {
             $("#sidebar").css("width", "0");
             $("#map").css("width", "100%");
             $("#map").css("left", "0");
             isSidebarVisible = false;
           } else {
-            console.log(isSidebarVisible)
             $("#sidebar").css("width", "30%");
             $("#map").css("width", "70%");
             $("#map").css("left", "30%");
             isSidebarVisible = true;
           }
         } else {
-          if(isSidebarVisible){
+          if (isSidebarVisible) {
             $("#sidebar").css("top", "0");
             $("#sidebar").css("height", "0");
             $("#map").css("height", "100%");
@@ -239,7 +236,9 @@ function loadMap(selectedCountry) {
       });
 
       // Add the button to the top center of the map
-      map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(controlButtonTwo);
+      map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(
+        controlButtonTwo
+      );
 
       controlButtonTwo.id = "control-button-two";
 
@@ -385,7 +384,13 @@ function loadMap(selectedCountry) {
                 infoWindow.setContent(
                   "<span class='popup-name'>" +
                     onlineName +
-                    "</span><p class='popup-details'>Bedroom Numbers: " + bedroomNumbers + "</p><p class='popup-details'>Property Type: " + propertyType + "</p><p class='popup-details'>Price: " + formatter.format(price) + "</p><img class='popup-image' src='" +
+                    "</span><p class='popup-details'>Bedroom Numbers: " +
+                    bedroomNumbers +
+                    "</p><p class='popup-details'>Property Type: " +
+                    propertyType +
+                    "</p><p class='popup-details'>Price: " +
+                    formatter.format(price) +
+                    "</p><img class='popup-image' src='" +
                     photo +
                     "'><p class='popup-button'><a target='_blank' class='phone-call-button' href='" +
                     propertyUrl +
@@ -447,13 +452,9 @@ function loadMap(selectedCountry) {
         function () {
           var currentlyDisplayedMarkers = [];
           var selectedCheckboxValue = $(this).attr("value");
-          // console.log(currentlyDisplayedMarkers);
-          console.log(selectedCheckboxValue);
 
-          // console.log(markers)
 
           // var currentCountry = $(this).val();
-          // console.log(currentCountry);
           if ($(this).is(":checked")) {
             if (selectedCheckboxValue === "all-first-values") {
               $("input.first-input").prop("checked", true);
@@ -511,13 +512,10 @@ function loadMap(selectedCountry) {
         function () {
           var currentlyDisplayedMarkers = [];
           var selectedCheckboxValue = $(this).attr("value");
-          // console.log(currentlyDisplayedMarkers);
-          console.log(selectedCheckboxValue);
-
-          // console.log(markers)
+        
 
           // var currentCountry = $(this).val();
-          // console.log(currentCountry);
+      
           if ($(this).is(":checked")) {
             if (selectedCheckboxValue === "all-second-values") {
               $("input.second-input").prop("checked", true);
@@ -609,18 +607,17 @@ function loadMap(selectedCountry) {
           var currentlyDisplayedMarkers = [];
           var selectedCheckboxValue = $(this).attr("value");
 
-          console.log(selectedCheckboxValue);
+   
 
           if ($(this).is(":checked")) {
             if (selectedCheckboxValue === "all-third-values") {
               $("input.third-input").prop("checked", true);
             }
 
-            console.log(markers);
+     
 
             for (var i = 0; i < markers.length; i++) {
-              console.log(markers[i]);
-              console.log(selectedCheckboxValue);
+            
               if (
                 markers[i].thirdFilterCheckboxValue === selectedCheckboxValue ||
                 selectedCheckboxValue === "all-third-values"
@@ -660,60 +657,75 @@ function loadMap(selectedCountry) {
       // start fourth filter - price range filter
 
       // for (var i = 0; i < markers.length; i++) {
-      let minValue = document.getElementById("min-value");
-      let maxValue = document.getElementById("max-value");
+        let minValue = document.getElementById("min-value");
+        let maxValue = document.getElementById("max-value");
 
-      function validateRange(minPrice, maxPrice) {
-        if (minPrice > maxPrice) {
-          // Swap to Values
-          let tempValue = maxPrice;
-          maxPrice = minPrice;
-          minPrice = tempValue;
-        }
-
-        minValue.innerHTML = formatter.format(minPrice);
-        maxValue.innerHTML = formatter.format(maxPrice);
-      }
-
-      const inputElements = document.querySelectorAll("input.price-input");
-
-      inputElements.forEach((element) => {
-        element.addEventListener("change", (e) => {
-          var currentlyDisplayedMarkers = [];
-
-          for (var i = 0; i < markers.length; i++) {
-            let minPrice = parseInt(inputElements[0].value);
-            let maxPrice = parseInt(inputElements[1].value);
-
-            console.log(markers[i].price);
-
-            if (
-              minPrice <= parseInt(markers[i].price) &&
-              maxPrice >= parseInt(markers[i].price)
-            ) {
-              markers[i].fourthFilterVisibility = true;
-
-              if (
-                markers[i].firstFilterVisibility &&
-                markers[i].secondFilterVisibility &&
-                markers[i].thirdFilterVisibility
-              ) {
-                currentlyDisplayedMarkers.push(markers[i]);
-                markers[i].setVisible(true);
-                $("li#" + markers[i].id).css("display", "block");
-              }
-            } else {
-              markers[i].fourthFilterVisibility = false;
-              markers[i].setVisible(false);
-              $("li#" + markers[i].id).css("display", "none");
+        function validateRange(minPrice, maxPrice) {
+            if (minPrice > maxPrice) {
+                let tempValue = maxPrice;
+                maxPrice = minPrice;
+                minPrice = tempValue;
             }
 
-            validateRange(minPrice, maxPrice);
+            minValue.innerHTML = formatter.format(minPrice);
+            maxValue.innerHTML = formatter.format(maxPrice);
+        }
 
-            validateRange(inputElements[0].value, inputElements[1].value);
-          }
+        const inputElements = document.querySelectorAll("input.price-input");
+
+        inputElements.forEach((element) => {
+            element.addEventListener("input", () => {
+                let minPrice = parseInt(inputElements[0].value);
+                let maxPrice = parseInt(inputElements[1].value);
+
+                if (minPrice > maxPrice) {
+                    if (element.classList.contains('min-price')) {
+                        inputElements[1].value = minPrice;
+                        maxPrice = minPrice;
+                    } else {
+                        inputElements[0].value = maxPrice;
+                        minPrice = maxPrice;
+                    }
+                }
+
+                validateRange(minPrice, maxPrice);
+
+                var currentlyDisplayedMarkers = [];
+                for (var i = 0; i < markers.length; i++) {
+                    if (
+                        minPrice <= parseInt(markers[i].price) &&
+                        maxPrice >= parseInt(markers[i].price)
+                    ) {
+                        markers[i].fourthFilterVisibility = true;
+
+                        if (
+                            markers[i].firstFilterVisibility &&
+                            markers[i].secondFilterVisibility &&
+                            markers[i].thirdFilterVisibility
+                        ) {
+                            currentlyDisplayedMarkers.push(markers[i]);
+                            markers[i].setVisible(true);
+                            $("li#" + markers[i].id).css("display", "block");
+                        }
+                    } else {
+                        markers[i].fourthFilterVisibility = false;
+                        markers[i].setVisible(false);
+                        $("li#" + markers[i].id).css("display", "none");
+                    }
+                }
+            });
         });
-      });
+
+       // Create our number formatter.
+const formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
+
+        // Initialize display values
+        validateRange(parseInt(inputElements[0].value), parseInt(inputElements[1].value));
+    
       // }
 
       // end price range filter
@@ -733,7 +745,9 @@ function generatePointsdetailsList(currentlyDisplayedMarkers) {
         currentlyDisplayedMarker.id +
         "'><div class='list-item-details'><p><a target='_blank' class='phone-call-button' href='" +
         currentlyDisplayedMarker.propertyUrl +
-        "'>" + currentlyDisplayedMarker.onlineName + "</a></p></div></li>"
+        "'>" +
+        currentlyDisplayedMarker.onlineName +
+        "</a></p></div></li>"
     )
   );
 }
@@ -765,12 +779,7 @@ checkListThree.getElementsByClassName("anchor")[0].onclick = function (evt) {
 };
 ////////////////
 
-// Create our number formatter.
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
+
 
 function searchByName(data) {
   //creates a listener for when you press a key
@@ -783,18 +792,15 @@ function searchByName(data) {
     //listens for you to press the ENTER key, at which point your web address will change to the one you have input in the search box
     if (e.keyCode == 13) {
       // window.location = "http://www.myurl.com/search/" + inputTextValue;
-      console.log("Input text: " + inputTextValue);
       $(".mapboxgl-popup").remove();
 
       // search for point by name
       var positiveArray = data.filter(function (value) {
-        console.log(value);
         return (
           value["onlineName"].toLowerCase() === inputTextValue.toLowerCase()
         );
       });
 
-      console.log(positiveArray[0]);
 
       var infoWindow = new google.maps.InfoWindow();
 
@@ -843,4 +849,4 @@ function searchByName(data) {
   // end listener when you press a key
 }
 
-$('div.gmnoprint').last().parent().wrap('<div id="newPos">Desi</div>');
+$("div.gmnoprint").last().parent().wrap('<div id="newPos">Desi</div>');
