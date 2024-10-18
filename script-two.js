@@ -427,7 +427,7 @@ function loadMap(selectedCountry) {
         var currentId = $(this).attr("id");
         var clickedMarker = markers[currentId - 1];
 
-        console.log(clickedMarker)
+        // console.log(clickedMarker)
 
         infoWindow.setContent(
           "<span class='popup-name'>" +
@@ -494,7 +494,7 @@ function loadMap(selectedCountry) {
                 markers[i].firstFilterCheckboxValue === selectedCheckboxValue ||
                 selectedCheckboxValue === "all-first-values"
               ) {
-                console.log($("li#" + markers[i].id)[0])
+                // console.log($("li#" + markers[i].id)[0])
                 markers[i].setVisible(false);
                 $("li#" + markers[i].id).css("display", "none");
                 markers[i].firstFilterVisibility = false;
